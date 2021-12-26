@@ -14,8 +14,8 @@ $title = $_POST['title'];
 $contents = $_POST['contents'];
 
 // XSS対策
-$title = htmlspecialchars($title, ENT_QUOTES, 'UTF-8');
-$contents = htmlspecialchars($contents, ENT_QUOTES, 'UTF-8');
+$title = htmlspecialchars($title, ENT_QUOTES, "UTF-8");
+$contents = htmlspecialchars($contents, ENT_QUOTES, "UTF-8");
 
 if ($title == "") {
     echo "タイトルが入力されていません。 <br />";
