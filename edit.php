@@ -21,9 +21,7 @@
         <textarea id="content" name="contents" rows="8" cols="40"></textarea>
     </div>
     <input type="submit" name="post" value="編集する">
-</form>
-<form action="index.html">
-    <button type="submit" name="back">戻る</button>
+    <input type="button" onclick="history.back()" value="戻る">
 </form>
 </body>
 </html>

@@ -11,7 +11,7 @@
 <h1>
     ToDo List Page
 </h1>
-<form action="create.html">
+<form action="create.php">
     <button type="submit" style="padding: 10px;font-size: 16px;margin-bottom: 10px">New Todo</button>
 </form>
 <table border="1">
@@ -30,7 +30,7 @@
         <td>トイレと風呂場を掃除する</td>
         <td>2020年12月25日</td>
         <td>
-            <form action="edit.html">
+            <form action="edit.php">
                 <button type="submit" style="padding: 10px;font-size: 16px;">編集する</button>
             </form>
         </td>
@@ -46,7 +46,7 @@
         <td>誕生日プレゼントを買う</td>
         <td>2020年12月26日</td>
         <td>
-            <form action="edit.html">
+            <form action="edit.php">
                 <button type="submit" style="padding: 10px;font-size: 16px;">編集する</button>
             </form>
         </td>
