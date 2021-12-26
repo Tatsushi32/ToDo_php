@@ -20,7 +20,7 @@
         <label for="content">内容：</label>
         <textarea id="content" name="contents" rows="8" cols="40"></textarea>
     </div>
-    <input type="submit" name="post" value="投稿する">
+    <input type="submit" name="post" value="登録">
     <input type="button" onclick="history.back()" value="戻る">
 </form>
 </body>
