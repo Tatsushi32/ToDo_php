@@ -19,7 +19,7 @@ try {
     $dbh = new PDO($dsn, $user, $password);
     $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-    $sql = "SELECT title,content,created_at,updated_at FROM posts WHERE 1";
+    $sql = "SELECT id,title,content,created_at,updated_at FROM posts WHERE 1";
     $stmt = $dbh->prepare($sql);
     $stmt->execute();
 
@@ -63,8 +63,8 @@ try {
             <td><?= $rec['created_at']; ?></td>
             <td><?= $rec['updated_at']; ?></td>
             <td>
-                <form action="edit.php">
-                    <button type="submit" style="padding: 10px;font-size: 16px;">編集する</button>
+                <form method="post" action="edit.php">
+                    <button type="submit" name="id" style="padding: 10px;font-size: 16px;" value="<?= $rec['id'] ;?>">編集する</button>
                 </form>
             </td>
             <td>
