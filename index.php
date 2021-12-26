@@ -68,8 +68,8 @@ try {
                 </form>
             </td>
             <td>
-                <form action="#">
-                    <button type="submit" style="padding: 10px;font-size: 16px;">削除する</button>
+                <form method="post" action="delete.php">
+                    <button type="submit" name="id" style="padding: 10px;font-size: 16px;" value="<?= $rec['id'] ;?>">削除する</button>
                 </form>
             </td>
         </tr>
