@@ -39,7 +39,7 @@ try {
     echo "内容： <br />";
     echo $contents . "<br />";
 
-} catch (Exeption $e){
+} catch (Exeption $e) {
 
     echo "ただいま障害によりご迷惑をおかけしております。 <br />";
     exit();
