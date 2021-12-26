@@ -5,13 +5,15 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Create Check Page</title>
+    <title>Edit Check Page</title>
 </head>
 <body>
 
 <?php
+
+$id = $_POST["id"];
 $title = $_POST["title"];
-$contents = $_POST["contents"];
+$contents = $_POST["content"];
 
 // XSS対策
 $title = htmlspecialchars($title, ENT_QUOTES, "UTF-8");
@@ -35,7 +37,8 @@ if ($title == "" || $contents == "") {
     echo "<input type='button' onclick='history.back()' value='戻る'>";
     echo "</form>";
 } else {
-    echo "<form method='post' action='create_done.php'>";
+    echo "<form method='post' action='edit_done.php'>";
+    echo "<input type='hidden' name='id' value='".$id."'>";
     echo "<input type='hidden' name='title' value='".$title."'>";
     echo "<input type='hidden' name='contents' value='".$contents."'>";
     echo "<br />";
