@@ -19,6 +19,8 @@ $contents = htmlspecialchars($contents, ENT_QUOTES, "UTF-8");
 
 if ($title == "") {
     echo "タイトルが入力されていません。 <br />";
+} elseif (mb_strlen($title) > 20) {
+    echo "タイトルは20文字以内で入力してください。 <br />";
 } else {
     echo "タイトル：" . $title . "<br />";
 }
@@ -30,7 +32,7 @@ if ($contents == "") {
     echo $contents . "<br />";
 }
 
-if ($title == "" || $contents == "") {
+if ($title == "" || $contents == "" || mb_strlen($title) > 20) {
     echo "<form>";
     echo "<input type='button' onclick='history.back()' value='戻る'>";
     echo "</form>";
