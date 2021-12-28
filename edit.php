@@ -7,6 +7,10 @@ methodCheck();
 
 try {
 
+    if (isset($_POST["keyword"])) {
+        $keyword = $_POST["keyword"];
+    }
+
     $id = $_POST["id"];
     $page = $_POST["page"];
 
@@ -50,6 +54,10 @@ try {
         Edit Todo Page
     </h1>
     <form method="post" action="edit_check.php">
+        <!-- 検索結果画面からの遷移の場合 -->
+        <?php if (isset($_POST["keyword"])): ?>
+            <input type="hidden" name="keyword" value="<?= $keyword; ?>">
+        <?php endif; ?>
         <input type="hidden" name="id" value="<?= $id; ?>">
         <input type="hidden" name="page" value="<?= $page; ?>">
         <div style="margin: 10px">
