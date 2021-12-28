@@ -2,25 +2,29 @@
 
 try {
 
-    $id = $_POST["id"];
+    if ($_SERVER["REQUEST_METHOD"] === "POST") {
+        $id = $_POST["id"];
 
-    // データベース接続
-    $dsn = "mysql:dbname=todo;host=localhost;charset=utf8";
-    $user = "root";
-    $password = "";
-    $dbh = new PDO($dsn, $user, $password);
-    $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-    $sql = "SELECT title,content FROM posts WHERE id=?";
-    $stmt = $dbh->prepare($sql);
-    $data[] = $id;
-    $stmt->execute($data);
-
-    $rec = $stmt->fetch(PDO::FETCH_ASSOC);
-    $title = $rec["title"];
-    $content = $rec["content"];
-
-    $dbh = null;
+        // データベース接続
+        $dsn = "mysql:dbname=todo;host=localhost;charset=utf8";
+        $user = "root";
+        $password = "";
+        $dbh = new PDO($dsn, $user, $password);
+        $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    
+        $sql = "SELECT title,content FROM posts WHERE id=?";
+        $stmt = $dbh->prepare($sql);
+        $data[] = $id;
+        $stmt->execute($data);
+    
+        $rec = $stmt->fetch(PDO::FETCH_ASSOC);
+        $title = $rec["title"];
+        $content = $rec["content"];
+    
+        $dbh = null;
+    } else {
+        exit('Invalid Request');
+    }
 
 } catch (Exeption $e) {
 
