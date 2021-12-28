@@ -10,6 +10,14 @@
 <body>
 
 <?php
+define("TODO_PER_PAGE", 5);
+
+// 1以上の正の整数
+if (preg_match("/^[1-9][0-9]*$/", $_GET["page"])) {
+    $page = (int)$_GET["page"];
+} else {
+    $page = 1;
+}
 
 try {
     // データベース接続
@@ -19,9 +27,13 @@ try {
     $dbh = new PDO($dsn, $user, $password);
     $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-    $sql = "SELECT id,title,content,created_at,updated_at FROM posts WHERE 1";
+    $offset = TODO_PER_PAGE * ($page - 1);
+    $sql = "SELECT id,title,content,created_at,updated_at FROM posts WHERE 1 limit " . $offset . "," . TODO_PER_PAGE;
     $stmt = $dbh->prepare($sql);
     $stmt->execute();
+
+    $total = $dbh->query("SELECT count(*) FROM posts")->fetchColumn();
+    $totalPages = ceil($total / TODO_PER_PAGE);
 
     $dbh = null;
 
@@ -75,5 +87,18 @@ try {
         </tr>
     <?php endwhile; ?>
 </table> 
+<?php if ($page > 1): ?>
+    <a href="?page=<?= $page-1 ?>">前へ</a>
+<?php endif; ?>
+<?php for ($i = 1; $i <= $totalPages; $i++): ?>
+    <?php if ($page == $i): ?>
+        <strong><a href="?page=<?= $i; ?>"><?= $i; ?></a></strong>
+    <?php else: ?>
+        <a href="?page=<?= $i; ?>"><?= $i; ?></a>
+    <?php endif; ?>
+<?php endfor; ?>
+<?php if ($page < $totalPages): ?>
+    <a href="?page=<?= $page+1 ?>">次へ</a>
+<?php endif; ?>
 </body>
 </html>
