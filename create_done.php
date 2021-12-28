@@ -55,6 +55,6 @@ try {
     <p>「<?= $title; ?>」を追加しました。</p>
     <p>内容：<?= $content; ?></p>
 
-    <a href="index.php">戻る</a>
+    <a href="index.php?page=1">戻る</a>
 </body>
 </html>

@@ -52,8 +52,8 @@ $_SESSION['token'] = htmlspecialchars($_SESSION['token'], ENT_QUOTES, "UTF-8");
     <?php else: ?>
         <form method="post" action="create_done.php">
             <input type="hidden" name="token" value="<?= $_SESSION['token']; ?>">
-            <input type="hidden" name="title" value=<?= $title; ?>>
-            <input type="hidden" name="content" value=<?= $content; ?>>
+            <input type="hidden" name="title" value="<?= $title; ?>">
+            <input type="hidden" name="content" value="<?= $content; ?>">
             <br />
             <input type="button" onclick="history.back()" value="戻る">
             <input type="submit" value="登録">

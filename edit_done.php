@@ -12,6 +12,7 @@ validateToken();
 try {
     
     $id = $_POST["id"];
+    $page = $_POST["page"];
     $title = $_POST["title"];
     $content = $_POST["content"];
 
@@ -58,7 +59,7 @@ try {
 <p>修正しました。</p>
 <br />
 
-<a href="index.php">戻る</a>
+<a href="index.php?page=<?= $page; ?>">戻る</a>
 
 </body>
 </html>
