@@ -1,11 +1,15 @@
 <?php
 
-$title = $_POST["title"];
-$content = $_POST["content"];
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    $title = $_POST["title"];
+    $content = $_POST["content"];
 
-// XSS対策
-$title = htmlspecialchars($title, ENT_QUOTES, "UTF-8");
-$content = htmlspecialchars($content, ENT_QUOTES, "UTF-8");
+    // XSS対策
+    $title = htmlspecialchars($title, ENT_QUOTES, "UTF-8");
+    $content = htmlspecialchars($content, ENT_QUOTES, "UTF-8");
+} else {
+    exit('Invalid Request');
+}
 
 ?>
 
