@@ -1,6 +1,10 @@
 <?php
+session_start();
 
 require("./functions.php");
+
+// トークン作成
+createToken();
 
 // POSTデータかを判定
 methodCheck();
@@ -12,6 +16,7 @@ $content = $_POST["content"];
 // XSS対策
 $title = htmlspecialchars($title, ENT_QUOTES, "UTF-8");
 $content = htmlspecialchars($content, ENT_QUOTES, "UTF-8");
+$_SESSION['token'] = htmlspecialchars($_SESSION['token'], ENT_QUOTES, "UTF-8");
 
 ?>
 
@@ -47,12 +52,13 @@ $content = htmlspecialchars($content, ENT_QUOTES, "UTF-8");
         </form>
     <?php else: ?>
         <form method="post" action="edit_done.php">
-        <input type="hidden" name="id" value=<?= $id; ?>>
-        <input type="hidden" name="title" value=<?= $title; ?>>
-        <input type="hidden" name="content" value=<?= $content; ?>>
-        <br />
-        <input type="button" onclick="history.back()" value="戻る">
-        <input type="submit" value="登録">
+            <input type="hidden" name="token" value="<?= $_SESSION['token']; ?>">
+            <input type="hidden" name="id" value=<?= $id; ?>>
+            <input type="hidden" name="title" value=<?= $title; ?>>
+            <input type="hidden" name="content" value=<?= $content; ?>>
+            <br />
+            <input type="button" onclick="history.back()" value="戻る">
+            <input type="submit" value="更新">
         </form>
     <?php endif; ?>
 </body>
