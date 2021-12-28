@@ -1,9 +1,13 @@
 <?php
+session_start();
 
 require("./functions.php");
 
 // POSTデータかを判定
 methodCheck();
+
+// トークン判別
+validateToken();
 
 try {
 
