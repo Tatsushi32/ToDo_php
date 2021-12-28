@@ -11,6 +11,11 @@ validateToken();
 
 try {
     
+    if (isset($_POST["keyword"])) {
+        $keyword = $_POST["keyword"];
+        $keyword = htmlspecialchars($keyword, ENT_QUOTES, "UTF-8");
+    }
+
     $id = $_POST["id"];
     $page = $_POST["page"];
     $title = $_POST["title"];
@@ -59,7 +64,12 @@ try {
 <p>修正しました。</p>
 <br />
 
-<a href="index.php?page=<?= $page; ?>">戻る</a>
+<!-- 検索結果画面からの遷移の場合 -->
+<?php if (isset($_POST["keyword"])): ?>
+    <a href="search_result.php?page=<?= $page; ?>&keyword=<?= $keyword; ?>">戻る</a>
+<?php else: ?>
+    <a href="index.php?page=<?= $page; ?>">戻る</a>
+<?php endif; ?>
 
 </body>
 </html>
