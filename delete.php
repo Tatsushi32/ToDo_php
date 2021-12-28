@@ -7,6 +7,11 @@ methodCheck();
 
 try {
 
+    if (isset($_POST["keyword"])) {
+        $keyword = $_POST["keyword"];
+        $keyword = htmlspecialchars($keyword, ENT_QUOTES, "UTF-8");
+    }
+
     $id = $_POST["id"];
     $page = $_POST["page"];
 
@@ -24,7 +29,11 @@ try {
 
     $dbh = null;
     
-    header("Location: index.php?page=" . $page);
+    if (isset($_POST["keyword"])) {
+        header("Location: search_result.php?page=" . $page . "&keyword=" . $keyword);
+    } else {
+        header("Location: index.php?page=" . $page);
+    }
     exit();
 
 } catch (Exeption $e) {
