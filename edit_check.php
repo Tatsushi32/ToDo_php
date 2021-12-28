@@ -1,3 +1,15 @@
+<?php
+
+$id = $_POST["id"];
+$title = $_POST["title"];
+$content = $_POST["content"];
+
+// XSS対策
+$title = htmlspecialchars($title, ENT_QUOTES, "UTF-8");
+$content = htmlspecialchars($content, ENT_QUOTES, "UTF-8");
+
+?>
+
 <!doctype html>
 <html lang="ja">
 <head>
@@ -8,47 +20,35 @@
     <title>Edit Check Page</title>
 </head>
 <body>
+    <!-- タイトルチェック -->
+    <?php if ($title == ""): ?>
+        <p>タイトルが入力されていません。</p>
+    <?php elseif (mb_strlen($title) > 20): ?>
+        <p>タイトルは20文字以内で入力してください。</p>
+    <?php else: ?>
+        <p>タイトル：<?= $title; ?></p>
+    <?php endif; ?>
 
-<?php
+    <!-- 内容チェック -->
+    <?php if ($content == ""): ?>
+        <p>内容が入力されていません。</p>
+    <?php else: ?>
+        <p>内容：<?= $content; ?></p>
+    <?php endif; ?>
 
-$id = $_POST["id"];
-$title = $_POST["title"];
-$contents = $_POST["content"];
-
-// XSS対策
-$title = htmlspecialchars($title, ENT_QUOTES, "UTF-8");
-$contents = htmlspecialchars($contents, ENT_QUOTES, "UTF-8");
-
-if ($title == "") {
-    echo "タイトルが入力されていません。 <br />";
-} elseif (mb_strlen($title) > 20) {
-    echo "タイトルは20文字以内で入力してください。 <br />";
-} else {
-    echo "タイトル：" . $title . "<br />";
-}
-
-if ($contents == "") {
-    echo "内容が入力されていません。 <br />";
-} else {
-    echo "内容： <br />";
-    echo $contents . "<br />";
-}
-
-if ($title == "" || $contents == "" || mb_strlen($title) > 20) {
-    echo "<form>";
-    echo "<input type='button' onclick='history.back()' value='戻る'>";
-    echo "</form>";
-} else {
-    echo "<form method='post' action='edit_done.php'>";
-    echo "<input type='hidden' name='id' value='".$id."'>";
-    echo "<input type='hidden' name='title' value='".$title."'>";
-    echo "<input type='hidden' name='contents' value='".$contents."'>";
-    echo "<br />";
-    echo "<input type='button' onclick='history.back()' value='戻る'>";
-    echo "<input type='submit' value='登録'>";
-    echo "</form>";
-}
-
-?>
+    <?php if ($title == "" || $content == "" || mb_strlen($title) > 20): ?>
+        <form>
+            <input type='button' onclick='history.back()' value='戻る'>
+        </form>
+    <?php else: ?>
+        <form method="post" action="edit_done.php">
+        <input type="hidden" name="id" value=<?= $id; ?>>
+        <input type="hidden" name="title" value=<?= $title; ?>>
+        <input type="hidden" name="content" value=<?= $content; ?>>
+        <br />
+        <input type="button" onclick="history.back()" value="戻る">
+        <input type="submit" value="登録">
+        </form>
+    <?php endif; ?>
 </body>
 </html>
