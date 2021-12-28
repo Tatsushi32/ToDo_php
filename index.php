@@ -1,13 +1,6 @@
 <?php
 define("TODO_PER_PAGE", 5);
 
-// 1以上の正の整数
-if (preg_match("/^[1-9][0-9]*$/", $_GET["page"])) {
-    $page = (int)$_GET["page"];
-} else {
-    $page = 1;
-}
-
 try {
     // データベース接続
     $dsn = "mysql:dbname=todo;host=localhost;charset=utf8";
@@ -16,13 +9,26 @@ try {
     $dbh = new PDO($dsn, $user, $password);
     $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
+    // 合計のtodo数とページ数取得
+    $total = $dbh->query("SELECT count(*) FROM posts")->fetchColumn();
+    $totalPages = ceil($total / TODO_PER_PAGE);
+
+    // ページ数取得。GETで渡ってこない場合は1を格納
+    if (isset($_GET['page']) && is_numeric($_GET['page'])) {
+        // urlに表記されているページ数が実際のページ数より多い場合、最後のページを格納
+        if ($_GET['page'] > $totalPages) {
+            $page = $totalPages;
+        } else {
+            $page = (int)$_GET["page"];
+        }
+    } else {
+        $page = 1;
+    }
+
     $offset = TODO_PER_PAGE * ($page - 1);
     $sql = "SELECT id,title,content,created_at,updated_at FROM posts WHERE 1 limit " . $offset . "," . TODO_PER_PAGE;
     $stmt = $dbh->prepare($sql);
     $stmt->execute();
-
-    $total = $dbh->query("SELECT count(*) FROM posts")->fetchColumn();
-    $totalPages = ceil($total / TODO_PER_PAGE);
 
     $dbh = null;
 
@@ -75,12 +81,14 @@ try {
                 <td><?= $rec['updated_at']; ?></td>
                 <td>
                     <form method="post" action="edit.php">
-                        <button type="submit" name="id" style="padding: 10px;font-size: 16px;" value="<?= $rec['id'] ;?>">編集する</button>
+                        <input type="hidden" name="page" value="<?= $page; ?>">
+                        <button type="submit" name="id" style="padding: 10px;font-size: 16px;" value="<?= $rec['id']; ?>">編集する</button>
                     </form>
                 </td>
                 <td>
                     <form method="post" action="delete.php">
-                        <button type="submit" name="id" style="padding: 10px;font-size: 16px;" value="<?= $rec['id'] ;?>">削除する</button>
+                        <input type="hidden" name="page" value="<?= $page; ?>">
+                        <button type="submit" name="id" style="padding: 10px;font-size: 16px;" value="<?= $rec['id']; ?>">削除する</button>
                     </form>
                 </td>
             </tr>

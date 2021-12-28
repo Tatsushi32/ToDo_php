@@ -8,6 +8,7 @@ methodCheck();
 try {
 
     $id = $_POST["id"];
+    $page = $_POST["page"];
 
     // データベース接続
     $dsn = "mysql:dbname=todo;host=localhost;charset=utf8";
@@ -23,7 +24,7 @@ try {
 
     $dbh = null;
     
-    header("Location: index.php");
+    header("Location: index.php?page=" . $page);
     exit();
 
 } catch (Exeption $e) {

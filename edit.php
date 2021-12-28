@@ -8,6 +8,7 @@ methodCheck();
 try {
 
     $id = $_POST["id"];
+    $page = $_POST["page"];
 
     // データベース接続
     $dsn = "mysql:dbname=todo;host=localhost;charset=utf8";
@@ -50,6 +51,7 @@ try {
     </h1>
     <form method="post" action="edit_check.php">
         <input type="hidden" name="id" value="<?= $id; ?>">
+        <input type="hidden" name="page" value="<?= $page; ?>">
         <div style="margin: 10px">
             <label for="title">タイトル：</label>
             <input id="title" type="text" name="title" value="<?= $title; ?>">
