@@ -19,6 +19,7 @@ try {
     $dbh = null;
     
     header("Location: index.php");
+    exit();
 
 } catch (Exeption $e) {
 
