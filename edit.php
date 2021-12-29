@@ -56,17 +56,17 @@ try {
     <form method="post" action="edit_check.php">
         <!-- 検索結果画面からの遷移の場合 -->
         <?php if (isset($_POST["keyword"])): ?>
-            <input type="hidden" name="keyword" value="<?= $keyword; ?>">
+            <input type="hidden" name="keyword" value="<?= h($keyword); ?>">
         <?php endif; ?>
-        <input type="hidden" name="id" value="<?= $id; ?>">
-        <input type="hidden" name="page" value="<?= $page; ?>">
+        <input type="hidden" name="id" value="<?= h($id); ?>">
+        <input type="hidden" name="page" value="<?= h($page); ?>">
         <div style="margin: 10px">
             <label for="title">タイトル：</label>
-            <input id="title" type="text" name="title" value="<?= $title; ?>">
+            <input id="title" type="text" name="title" value="<?= h($title); ?>">
         </div>
         <div style="margin: 10px">
             <label for="content">内容：</label>
-            <textarea id="content" name="content" rows="8" cols="40"><?= $content; ?></textarea>
+            <textarea id="content" name="content" rows="8" cols="40"><?= h($content); ?></textarea>
         </div>
         <input type="submit" value="OK">
         <input type="button" onclick="history.back()" value="戻る">

@@ -1,5 +1,11 @@
 <?php
 
+// エスケープ処理
+function h($str)
+{
+    return htmlspecialchars($str, ENT_QUOTES, 'UTF-8');
+}
+
 function methodCheck() {
     if ($_SERVER["REQUEST_METHOD"] !== "POST") {
         exit("Invalid Request");

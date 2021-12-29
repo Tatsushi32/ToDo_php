@@ -9,7 +9,6 @@ try {
 
     if (isset($_POST["keyword"])) {
         $keyword = $_POST["keyword"];
-        $keyword = htmlspecialchars($keyword, ENT_QUOTES, "UTF-8");
     }
 
     $id = $_POST["id"];
