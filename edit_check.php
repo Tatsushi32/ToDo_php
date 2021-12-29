@@ -14,15 +14,11 @@ if (isset($_POST["keyword"])) {
     $keyword = htmlspecialchars($keyword, ENT_QUOTES, "UTF-8");
 }
 
+$token = $_SESSION['token'];
 $id = $_POST["id"];
 $page = $_POST["page"];
 $title = $_POST["title"];
 $content = $_POST["content"];
-
-// XSS対策
-$title = htmlspecialchars($title, ENT_QUOTES, "UTF-8");
-$content = htmlspecialchars($content, ENT_QUOTES, "UTF-8");
-$_SESSION['token'] = htmlspecialchars($_SESSION['token'], ENT_QUOTES, "UTF-8");
 
 ?>
 
@@ -42,14 +38,14 @@ $_SESSION['token'] = htmlspecialchars($_SESSION['token'], ENT_QUOTES, "UTF-8");
     <?php elseif (mb_strlen($title) > 20): ?>
         <p>タイトルは20文字以内で入力してください。</p>
     <?php else: ?>
-        <p>タイトル：<?= $title; ?></p>
+        <p>タイトル：<?= h($title); ?></p>
     <?php endif; ?>
 
     <!-- 内容チェック -->
     <?php if ($content == ""): ?>
         <p>内容が入力されていません。</p>
     <?php else: ?>
-        <p>内容：<?= $content; ?></p>
+        <p>内容：<?= h($content); ?></p>
     <?php endif; ?>
 
     <?php if ($title == "" || $content == "" || mb_strlen($title) > 20): ?>
@@ -60,13 +56,13 @@ $_SESSION['token'] = htmlspecialchars($_SESSION['token'], ENT_QUOTES, "UTF-8");
         <form method="post" action="edit_done.php">
             <!-- 検索結果画面からの遷移の場合 -->
             <?php if (isset($_POST["keyword"])): ?>
-                <input type="hidden" name="keyword" value="<?= $keyword; ?>">
+                <input type="hidden" name="keyword" value="<?= h($keyword); ?>">
             <?php endif; ?>
-            <input type="hidden" name="token" value="<?= $_SESSION['token']; ?>">
-            <input type="hidden" name="id" value="<?= $id; ?>">
-            <input type="hidden" name="page" value="<?= $page; ?>">
-            <input type="hidden" name="title" value="<?= $title; ?>">
-            <input type="hidden" name="content" value="<?= $content; ?>">
+            <input type="hidden" name="token" value="<?= h($token); ?>">
+            <input type="hidden" name="id" value="<?= h($id); ?>">
+            <input type="hidden" name="page" value="<?= h($page); ?>">
+            <input type="hidden" name="title" value="<?= h($title); ?>">
+            <input type="hidden" name="content" value="<?= h($content); ?>">
             <br />
             <input type="button" onclick="history.back()" value="戻る">
             <input type="submit" value="更新">

@@ -1,11 +1,12 @@
 <?php
+require("./functions.php");
+
 define("TODO_PER_PAGE", 5);
 
 try {
 
     if (isset($_GET["keyword"])) {
         $keyword = $_GET["keyword"];
-        $keyword = htmlspecialchars($keyword, ENT_QUOTES, "UTF-8");
     }
 
     // データベース接続
@@ -69,7 +70,7 @@ try {
     </a>
     <br />
     <form action="" method="get">
-        <input type="text" name="keyword" style="padding: 10px;font-size: 16px;margin-bottom: 10px" value=<?= $keyword; ?>>
+        <input type="text" name="keyword" style="padding: 10px;font-size: 16px;margin-bottom: 10px" value=<?= h($keyword); ?>>
         <button type="submit" style="padding: 10px;font-size: 16px;margin-bottom: 10px">Search Todo</button>
     </form>
 
@@ -96,39 +97,39 @@ try {
                 <?php break; ?>
             <?php endif; ?>
             <tr>
-                <td><?= $rec["title"]; ?></td>
-                <td><?= $rec["content"]; ?></td>
-                <td><?= $rec["created_at"]; ?></td>
-                <td><?= $rec["updated_at"]; ?></td>
+                <td><?= h($rec["title"]); ?></td>
+                <td><?= h($rec["content"]); ?></td>
+                <td><?= h($rec["created_at"]); ?></td>
+                <td><?= h($rec["updated_at"]); ?></td>
                 <td>
                     <form method="post" action="edit.php">
-                        <input type="hidden" name="page" value="<?= $page; ?>">
-                        <input type="hidden" name="keyword" value="<?= $keyword; ?>">
-                        <button type="submit" name="id" style="padding: 10px;font-size: 16px;" value="<?= $rec["id"]; ?>">編集する</button>
+                        <input type="hidden" name="page" value="<?= h($page); ?>">
+                        <input type="hidden" name="keyword" value="<?= h($keyword); ?>">
+                        <button type="submit" name="id" style="padding: 10px;font-size: 16px;" value="<?= h($rec["id"]); ?>">編集する</button>
                     </form>
                 </td>
                 <td>
                     <form method="post" action="delete.php">
-                        <input type="hidden" name="page" value="<?= $page; ?>">
-                        <input type="hidden" name="keyword" value="<?= $keyword; ?>">
-                        <button type="submit" name="id" style="padding: 10px;font-size: 16px;" value="<?= $rec["id"]; ?>">削除する</button>
+                        <input type="hidden" name="page" value="<?= h($page); ?>">
+                        <input type="hidden" name="keyword" value="<?= h($keyword); ?>">
+                        <button type="submit" name="id" style="padding: 10px;font-size: 16px;" value="<?= h($rec["id"]); ?>">削除する</button>
                     </form>
                 </td>
             </tr>
         <?php endwhile; ?>
     </table> 
     <?php if ($page > 1): ?>
-        <a href="?page=<?= $page-1 ?>&keyword=<?= $keyword; ?>">前へ</a>
+        <a href="?page=<?= h($page)-1 ?>&keyword=<?= h($keyword); ?>">前へ</a>
     <?php endif; ?>
     <?php for ($i = 1; $i <= $totalPages; $i++): ?>
         <?php if ($page == $i): ?>
-            <strong><a href="?page=<?= $i; ?>&keyword=<?= $keyword; ?>"><?= $i; ?></a></strong>
+            <strong><a href="?page=<?= h($i); ?>&keyword=<?= h($keyword); ?>"><?= h($i); ?></a></strong>
         <?php else: ?>
-            <a href="?page=<?= $i; ?>&keyword=<?= $keyword; ?>"><?= $i; ?></a>
+            <a href="?page=<?= h($i); ?>&keyword=<?= h($keyword); ?>"><?= h($i); ?></a>
         <?php endif; ?>
     <?php endfor; ?>
     <?php if ($page < $totalPages): ?>
-        <a href="?page=<?= $page+1 ?>&keyword=<?= $keyword; ?>">次へ</a>
+        <a href="?page=<?= h($page)+1 ?>&keyword=<?= h($keyword); ?>">次へ</a>
     <?php endif; ?>
 </body>
 </html>
