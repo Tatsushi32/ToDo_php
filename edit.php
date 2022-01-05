@@ -1,42 +1,23 @@
 <?php
 
-require("./functions.php");
+require(__DIR__ . "/./config.php");
 
 // POSTデータかを判定
 methodCheck();
 
-try {
+$id = $_POST["id"];
+$page = $_POST["page"];
 
-    if (isset($_POST["keyword"])) {
-        $keyword = $_POST["keyword"];
-    }
-
-    $id = $_POST["id"];
-    $page = $_POST["page"];
-
-    // データベース接続
-    $dsn = "mysql:dbname=todo;host=localhost;charset=utf8";
-    $user = "root";
-    $password = "";
-    $dbh = new PDO($dsn, $user, $password);
-    $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-    $sql = "SELECT title,content FROM posts WHERE id=?";
-    $stmt = $dbh->prepare($sql);
-    $data[] = $id;
-    $stmt->execute($data);
-
-    $rec = $stmt->fetch(PDO::FETCH_ASSOC);
-    $title = $rec["title"];
-    $content = $rec["content"];
-
-    $dbh = null;
-
-} catch (Exeption $e) {
-
-    echo "ただいま障害によりご迷惑をおかけしております。 <br />";
-    exit();
+// 検索結果画面からの場合
+if (isset($_POST["keyword"])) {
+    $keyword = $_POST["keyword"];
 }
+
+// データベース接続
+$dbh = connectDb();
+
+// 選択したtodoの情報取得
+$selected_todo = selectTodo($dbh, $id);
 
 ?>
 
@@ -62,11 +43,11 @@ try {
         <input type="hidden" name="page" value="<?= h($page); ?>">
         <div style="margin: 10px">
             <label for="title">タイトル：</label>
-            <input id="title" type="text" name="title" value="<?= h($title); ?>">
+            <input id="title" type="text" name="title" value="<?= h($selected_todo->title); ?>">
         </div>
         <div style="margin: 10px">
             <label for="content">内容：</label>
-            <textarea id="content" name="content" rows="8" cols="40"><?= h($content); ?></textarea>
+            <textarea id="content" name="content" rows="8" cols="40"><?= h($selected_todo->content); ?></textarea>
         </div>
         <input type="submit" value="OK">
         <input type="button" onclick="history.back()" value="戻る">

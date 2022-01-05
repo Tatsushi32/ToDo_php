@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-require("./functions.php");
+require(__DIR__ . "/./config.php");
 
 // トークン作成
 createToken();
@@ -9,16 +9,16 @@ createToken();
 // POSTデータかを判定
 methodCheck();
 
-if (isset($_POST["keyword"])) {
-    $keyword = $_POST["keyword"];
-    $keyword = htmlspecialchars($keyword, ENT_QUOTES, "UTF-8");
-}
-
 $token = $_SESSION['token'];
 $id = $_POST["id"];
 $page = $_POST["page"];
 $title = $_POST["title"];
 $content = $_POST["content"];
+
+// 検索結果画面からの場合
+if (isset($_POST["keyword"])) {
+    $keyword = $_POST["keyword"];
+}
 
 ?>
 
@@ -48,6 +48,7 @@ $content = $_POST["content"];
         <p>内容：<?= h($content); ?></p>
     <?php endif; ?>
 
+    <!-- 条件を満たしていなければ戻るボタンのみ表示 -->
     <?php if ($title == "" || $content == "" || mb_strlen($title) > 20): ?>
         <form>
             <input type='button' onclick='history.back()' value='戻る'>

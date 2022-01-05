@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-require("./functions.php");
+require(__DIR__ . "/./config.php");
 
 // トークン作成
 createToken();
@@ -41,13 +41,14 @@ $token = $_SESSION['token'];
         <p>内容：<?= h($content); ?></p>
     <?php endif; ?>
 
+    <!-- 条件を満たしていなければ戻るボタンのみ表示 -->
     <?php if ($title == "" || $content == "" || mb_strlen($title) > 20): ?>
         <form>
             <input type='button' onclick='history.back()' value='戻る'>
         </form>
     <?php else: ?>
         <form method="post" action="create_done.php">
-            <input type="hidden" name="token" value="<?= h($_SESSION['token']); ?>">
+            <input type="hidden" name="token" value="<?= h($token); ?>">
             <input type="hidden" name="title" value="<?= h($title); ?>">
             <input type="hidden" name="content" value="<?= h($content); ?>">
             <br />

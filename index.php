@@ -1,44 +1,14 @@
 <?php
-require("./functions.php");
+require(__DIR__ . "/./config.php");
 
-define("TODO_PER_PAGE", 5);
+// データベース接続
+$dbh = connectDb();
 
-try {
-    // データベース接続
-    $dsn = "mysql:dbname=todo;host=localhost;charset=utf8";
-    $user = "root";
-    $password = "";
-    $dbh = new PDO($dsn, $user, $password);
-    $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-    // 合計のtodo数とページ数取得
-    $total = $dbh->query("SELECT count(*) FROM posts")->fetchColumn();
-    $totalPages = ceil($total / TODO_PER_PAGE);
-
-    // ページ数取得。GETで渡ってこない場合は1を格納
-    if (isset($_GET["page"]) && is_numeric($_GET["page"])) {
-        // urlに表記されているページ数が実際のページ数より多い場合、最後のページを格納
-        if ($_GET['page'] > $totalPages) {
-            $page = $totalPages;
-        } else {
-            $page = (int)$_GET["page"];
-        }
-    } else {
-        $page = 1;
-    }
-
-    $offset = TODO_PER_PAGE * ($page - 1);
-    $sql = "SELECT id,title,content,created_at,updated_at FROM posts WHERE 1 limit " . $offset . "," . TODO_PER_PAGE;
-    $stmt = $dbh->prepare($sql);
-    $stmt->execute();
-
-    $dbh = null;
-
-} catch (Exeption $e) {
-
-    echo "ただいま障害によりご迷惑をおかけしております。 <br />";
-    exit();
-}
+// Todo情報の取得
+$todoInfo = getTodos($dbh);
+$page = $todoInfo[0];
+$total_pages = $todoInfo[1];
+$todos = $todoInfo[2];
 
 ?>
 
@@ -55,16 +25,20 @@ try {
     <a href="?page=1" style="text-decoration: none; color: black;">
         <h1>ToDo List Page</h1>
     </a>
+
+    <!-- 新規作成ボタン -->
     <form action="create.php">
         <button type="submit" style="padding: 10px;font-size: 16px;margin-bottom: 10px">New Todo</button>
     </form>
     <br />
+
+    <!-- 検索ボックス -->
     <form action="search_result.php" method="get">
         <input type="text" name="keyword" style="padding: 10px;font-size: 16px;margin-bottom: 10px">
         <button type="submit" style="padding: 10px;font-size: 16px;margin-bottom: 10px">Search Todo</button>
     </form>
 
-
+    <!-- Todo一覧 -->
     <table border="1">
         <colgroup span="4"></colgroup>
         <tr>
@@ -75,43 +49,42 @@ try {
             <th>編集</th>
             <th>削除</th>
         </tr>
-
-        <?php while (true): ?>
-            <?php $rec = $stmt->fetch(PDO::FETCH_ASSOC); ?>
-            <?php if ($rec == false): ?>
-                <?php break; ?>
-            <?php endif; ?>
+        <?php foreach ($todos as $todo): ?>
             <tr>
-                <td><?= h($rec["title"]); ?></td>
-                <td><?= h($rec["content"]); ?></td>
-                <td><?= h($rec["created_at"]); ?></td>
-                <td><?= h($rec["updated_at"]); ?></td>
+                <td><?= h($todo->title); ?></td>
+                <td><?= h($todo->content); ?></td>
+                <td><?= h($todo->created_at); ?></td>
+                <td><?= h($todo->updated_at); ?></td>
                 <td>
                     <form method="post" action="edit.php">
                         <input type="hidden" name="page" value="<?= h($page); ?>">
-                        <button type="submit" name="id" style="padding: 10px;font-size: 16px;" value="<?= h($rec["id"]); ?>">編集する</button>
+                        <button type="submit" name="id" style="padding: 10px;font-size: 16px;" value="<?= h($todo->id); ?>">編集する</button>
                     </form>
                 </td>
                 <td>
                     <form method="post" action="delete.php">
                         <input type="hidden" name="page" value="<?= h($page); ?>">
-                        <button type="submit" name="id" style="padding: 10px;font-size: 16px;" value="<?= h($rec["id"]); ?>">削除する</button>
+                        <button type="submit" name="id" style="padding: 10px;font-size: 16px;" value="<?= h($todo->id); ?>">削除する</button>
                     </form>
                 </td>
             </tr>
-        <?php endwhile; ?>
+        <?php endforeach; ?>
     </table> 
+
+    <!-- ページング -->
     <?php if ($page > 1): ?>
         <a href="?page=<?= h($page)-1 ?>">前へ</a>
     <?php endif; ?>
-    <?php for ($i = 1; $i <= $totalPages; $i++): ?>
+
+    <?php for ($i = 1; $i <= $total_pages; $i++): ?>
         <?php if ($page == $i): ?>
             <strong><a href="?page=<?= h($i); ?>"><?= h($i); ?></a></strong>
         <?php else: ?>
             <a href="?page=<?= h($i); ?>"><?= h($i); ?></a>
         <?php endif; ?>
     <?php endfor; ?>
-    <?php if ($page < $totalPages): ?>
+
+    <?php if ($page < $total_pages): ?>
         <a href="?page=<?= h($page)+1 ?>">次へ</a>
     <?php endif; ?>
 </body>
