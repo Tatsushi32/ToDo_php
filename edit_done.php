@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-require("./functions.php");
+require(__DIR__ . "/./config.php");
 
 // POSTデータかを判定
 methodCheck();
@@ -9,39 +9,21 @@ methodCheck();
 // トークン判別
 validateToken();
 
-try {
-    
-    if (isset($_POST["keyword"])) {
-        $keyword = $_POST["keyword"];
-    }
+$id = $_POST["id"];
+$page = $_POST["page"];
+$title = $_POST["title"];
+$content = $_POST["content"];
 
-    $id = $_POST["id"];
-    $page = $_POST["page"];
-    $title = $_POST["title"];
-    $content = $_POST["content"];
-
-    // データベース接続
-    $dsn = "mysql:dbname=todo;host=localhost;charset=utf8";
-    $user = "root";
-    $password = "";
-    $dbh = new PDO($dsn, $user, $password);
-    $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-    $sql = "UPDATE posts SET title=?, content=? WHERE id=?";
-    $stmt = $dbh->prepare($sql);
-    $data[] = $title;
-    $data[] = $content;
-    $data[] = $id;
-    $stmt->execute($data);
-
-    // データベースから切断
-    $dbh = null;
- 
-} catch (Exeption $e) {
-
-    echo "ただいま障害によりご迷惑をおかけしております。 <br />";
-    exit();
+// 検索結果画面からの場合
+if (isset($_POST["keyword"])) {
+    $keyword = $_POST["keyword"];
 }
+
+// データベース接続
+$dbh = connectDb();
+
+// todo更新
+updateTodo($dbh, $title, $content, $id);
 
 ?>
 
@@ -59,7 +41,7 @@ try {
 <p>修正しました。</p>
 <br />
 
-<!-- 検索結果画面からの遷移の場合 -->
+<!-- 編集ボタンを押したもとの画面に戻る -->
 <?php if (isset($_POST["keyword"])): ?>
     <a href="search_result.php?page=<?= h($page); ?>&keyword=<?= h($keyword); ?>">戻る</a>
 <?php else: ?>
