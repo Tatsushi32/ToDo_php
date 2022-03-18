@@ -5,8 +5,12 @@ require(__DIR__ . "/./config.php");
 // POSTデータかを判定
 methodCheck();
 
+$id_check = $_POST["id_check"];
 $id = $_POST["id"];
 $page = $_POST["page"];
+
+// 意図したデータの削除かを判定
+deleteDataCheck($id_check, $id);
 
 // 検索結果画面からの場合
 if (isset($_POST["keyword"])) {

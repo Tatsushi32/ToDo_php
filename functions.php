@@ -116,6 +116,13 @@ function deleteTodo($dbh, $id) {
     $stmt->execute($data);
 }
 
+// 意図したデータの削除かをチェック
+function deleteDataCheck($id_check, $id) {
+    if ($id_check != $id) {
+        exit("Invalid Request");
+    }
+}
+
 // 検索結果の取得(ページング)
 function getSearchResult($dbh, $keyword) {
     $total_todo_sql = "SELECT count(*) FROM posts WHERE title like ?";
