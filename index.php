@@ -64,7 +64,6 @@ $todos = $todoInfo[2];
                 <td>
                     <form method="post" action="delete.php">
                         <input type="hidden" name="page" value="<?= h($page); ?>">
-                        <input type="hidden" name="id_check" value="<?= h($todo->id); ?>">
                         <button type="submit" name="id" style="padding: 10px;font-size: 16px;" value="<?= h($todo->id); ?>">削除する</button>
                     </form>
                 </td>

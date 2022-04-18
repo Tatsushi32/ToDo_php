@@ -110,17 +110,20 @@ function updateTodo($dbh, $title, $content, $id) {
 
 // 削除
 function deleteTodo($dbh, $id) {
+    $validateSql = "SELECT COUNT(*) FROM posts WHERE id=?";
+    $stmt = $dbh->prepare($validateSql);
+    $validate[] = $id;
+    $stmt->execute($validate);
+    $validateId = $stmt->fetchColumn();
+
+    if ($validateId == 0) {
+        exit("Invalid post request");
+    }
+
     $sql = "DELETE FROM posts WHERE id=?";
     $stmt = $dbh->prepare($sql);
     $data[] = $id;
     $stmt->execute($data);
-}
-
-// 意図したデータの削除かをチェック
-function deleteDataCheck($id_check, $id) {
-    if ($id_check != $id) {
-        exit("Invalid Request");
-    }
 }
 
 // 検索結果の取得(ページング)
