@@ -1,6 +1,6 @@
 <?php
 
-require(__DIR__ . "/./config.php");
+require_once(__DIR__ . "/./config.php");
 
 // POSTデータかを判定
 methodCheck();

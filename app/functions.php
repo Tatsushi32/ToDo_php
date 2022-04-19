@@ -1,10 +1,10 @@
 <?php
 
-// エスケープ処理
-function h($str)
-{
-    return htmlspecialchars($str, ENT_QUOTES, 'UTF-8');
-}
+// // エスケープ処理
+// function h($str)
+// {
+//     return htmlspecialchars($str, ENT_QUOTES, 'UTF-8');
+// }
 
 // POSTデータかの確認
 function methodCheck() {
