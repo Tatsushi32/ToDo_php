@@ -9,12 +9,15 @@ if (isset($_GET["keyword"])) {
 // データベース接続
 $dbh = connectDb();
 
+// ページネーション
+$pagination = searchResultPagination($dbh, $keyword);
+$page = $pagination[0];
+$total_results = $pagination[1];
+$total_pages = $pagination[2];
+$offset = $pagination[3];
+
 // 検索結果の取得
-$SearchResults = getSearchResult($dbh, $keyword);
-$page = $SearchResults[0];
-$total_results = $SearchResults[1];
-$total_pages = $SearchResults[2];
-$todos = $SearchResults[3];
+$todos = getSearchResult($dbh, $keyword, $offset);
 
 ?>
 

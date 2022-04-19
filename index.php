@@ -4,11 +4,14 @@ require_once(__DIR__ . "/app/config.php");
 // データベース接続
 $dbh = connectDb();
 
+// ページネーション
+$pagenation = pagination($dbh);
+$page = $pagenation[0];
+$total_pages = $pagenation[1];
+$offset = $pagenation[2];
+
 // Todo情報の取得
-$todoInfo = getTodos($dbh);
-$page = $todoInfo[0];
-$total_pages = $todoInfo[1];
-$todos = $todoInfo[2];
+$todos = getTodos($dbh, $offset);
 
 ?>
 
