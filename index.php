@@ -2,7 +2,7 @@
 require_once(__DIR__ . "/app/config.php");
 
 // データベース接続
-$dbh = connectDb();
+$dbh = Database::connect();
 
 // ページネーション
 $pagenation = pagination($dbh);
@@ -11,7 +11,8 @@ $total_pages = $pagenation[1];
 $offset = $pagenation[2];
 
 // Todo情報の取得
-$todos = getTodos($dbh, $offset);
+$todo = new Todo($dbh);
+$todos = $todo->getAll($offset);
 
 ?>
 

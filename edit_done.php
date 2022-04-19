@@ -4,10 +4,10 @@ session_start();
 require_once(__DIR__ . "/app/config.php");
 
 // POSTデータかを判定
-methodCheck();
+MEthod::check();
 
 // トークン判別
-validateToken();
+Token::validate();
 
 $id = $_POST["id"];
 $page = $_POST["page"];

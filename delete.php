@@ -3,7 +3,7 @@
 require_once(__DIR__ . "/./config.php");
 
 // POSTデータかを判定
-methodCheck();
+Method::check();
 
 $id = $_POST["id"];
 $page = $_POST["page"];

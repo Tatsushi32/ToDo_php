@@ -1,56 +1,5 @@
 <?php
 
-// // エスケープ処理
-// function h($str)
-// {
-//     return htmlspecialchars($str, ENT_QUOTES, 'UTF-8');
-// }
-
-// POSTデータかの確認
-function methodCheck() {
-    if ($_SERVER["REQUEST_METHOD"] !== "POST") {
-        exit("Invalid Request");
-    }
-}
-
-// トークン作成
-function createToken() {
-    if (!isset($_SESSION["token"])) {
-        $_SESSION["token"] = bin2hex(random_bytes(32));
-    }
-}
-
-// トークン確認
-function validateToken() {
-    // セッションが空か、送信されたトークンが一致しない場合
-    if (empty($_SESSION["token"]) || $_SESSION["token"] !== filter_input(INPUT_POST, "token")) {
-        exit("Invalid post request");
-    }
-}
-
-// データベース接続
-function connectDb() {
-    try {
-        $dbh = new PDO(
-            DSN, 
-            DB_USER, 
-            DB_PASS,
-            [
-                PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-                PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_OBJ,
-                PDO::ATTR_EMULATE_PREPARES => false,
-            ]
-        );
-        return $dbh;
-    
-    } catch (Exeption $e) {
-    
-        echo "ただいま障害によりご迷惑をおかけしております。 <br />";
-        header("Location: index.php");
-        exit();
-    }
-}
-
 // ページネーション(一覧)
 function pagination($dbh) {
     $totalTodos = $dbh->query("SELECT count(*) FROM posts")->fetchColumn();
@@ -72,15 +21,6 @@ function pagination($dbh) {
     $offset = TODO_PER_PAGE * ($page - 1);
 
     return [$page, $totalPages, $offset];
-}
-
-// 全データ取得
-function getTodos($dbh, $offset) {
-    $sql = "SELECT * FROM posts limit " . $offset . "," . TODO_PER_PAGE;
-    $stmt = $dbh->prepare($sql);
-    $stmt->execute();
-    $todos = $stmt->fetchAll();
-    return $todos;
 }
 
 // 新規作成
