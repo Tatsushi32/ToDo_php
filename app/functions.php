@@ -51,9 +51,8 @@ function connectDb() {
     }
 }
 
-// todo一覧(ページング)
-function getTodos($dbh) {
-
+// ページネーション(一覧)
+function pagination($dbh) {
     $totalTodos = $dbh->query("SELECT count(*) FROM posts")->fetchColumn();
     $totalPages = ceil($totalTodos / TODO_PER_PAGE);
 
@@ -72,11 +71,16 @@ function getTodos($dbh) {
     // データ取得スタート位置
     $offset = TODO_PER_PAGE * ($page - 1);
 
-    $sql = "SELECT id,title,content,created_at,updated_at FROM posts WHERE 1 limit " . $offset . "," . TODO_PER_PAGE;
+    return [$page, $totalPages, $offset];
+}
+
+// 全データ取得
+function getTodos($dbh, $offset) {
+    $sql = "SELECT * FROM posts limit " . $offset . "," . TODO_PER_PAGE;
     $stmt = $dbh->prepare($sql);
     $stmt->execute();
     $todos = $stmt->fetchAll();
-    return [$page, $totalPages, $todos];
+    return $todos;
 }
 
 // 新規作成
@@ -126,8 +130,8 @@ function deleteTodo($dbh, $id) {
     $stmt->execute($data);
 }
 
-// 検索結果の取得(ページング)
-function getSearchResult($dbh, $keyword) {
+// ページネーション(検索結果)
+function searchResultPagination($dbh, $keyword) {
     $total_todo_sql = "SELECT count(*) FROM posts WHERE title like ?";
     $stmt = $dbh->prepare($total_todo_sql);
     $keywords[] = "%" . $keyword . "%";
@@ -151,12 +155,17 @@ function getSearchResult($dbh, $keyword) {
     // データ取得スタート位置
     $offset = TODO_PER_PAGE * ($page - 1);
 
+    return [$page, $total_results, $total_pages, $offset];
+}
+
+// 検索結果の取得
+function getSearchResult($dbh, $keyword, $offset) {
     $sql = "SELECT * FROM posts WHERE title like ? limit ". $offset . "," . TODO_PER_PAGE;
     $stmt = $dbh->prepare($sql);
     $data[] = "%" . $keyword . "%";
     $stmt->execute($data);
     $todos = $stmt->fetchAll();
-    return [$page, $total_results, $total_pages, $todos];
+    return $todos;
 }
 
 ?>
