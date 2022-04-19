@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-require(__DIR__ . "/./config.php");
+require_once(__DIR__ . "/app/config.php");
 
 // POSTデータかを判定
 methodCheck();
@@ -30,8 +30,8 @@ createTodo($dbh, $title, $content);
     <title>Create Check Page</title>
 </head>
 <body>
-    <p>「<?= h($title); ?>」を追加しました。</p>
-    <p>内容：<?= h($content); ?></p>
+    <p>「<?= Utils::h($title); ?>」を追加しました。</p>
+    <p>内容：<?= Utils::h($content); ?></p>
 
     <a href="index.php?page=1">戻る</a>
 </body>

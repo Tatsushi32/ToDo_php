@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-require(__DIR__ . "/./config.php");
+require_once(__DIR__ . "/app/config.php");
 
 // POSTデータかを判定
 methodCheck();
@@ -43,9 +43,9 @@ updateTodo($dbh, $title, $content, $id);
 
 <!-- 編集ボタンを押したもとの画面に戻る -->
 <?php if (isset($_POST["keyword"])): ?>
-    <a href="search_result.php?page=<?= h($page); ?>&keyword=<?= h($keyword); ?>">戻る</a>
+    <a href="search_result.php?page=<?= Utils::h($page); ?>&keyword=<?= Utils::h($keyword); ?>">戻る</a>
 <?php else: ?>
-    <a href="index.php?page=<?= h($page); ?>">戻る</a>
+    <a href="index.php?page=<?= Utils::h($page); ?>">戻る</a>
 <?php endif; ?>
 
 </body>

@@ -1,6 +1,6 @@
 <?php
 
-require(__DIR__ . "/./config.php");
+require_once(__DIR__ . "/app/config.php");
 
 // POSTデータかを判定
 methodCheck();
@@ -37,17 +37,17 @@ $selected_todo = selectTodo($dbh, $id);
     <form method="post" action="edit_check.php">
         <!-- 検索結果画面からの遷移の場合 -->
         <?php if (isset($_POST["keyword"])): ?>
-            <input type="hidden" name="keyword" value="<?= h($keyword); ?>">
+            <input type="hidden" name="keyword" value="<?= Utils::h($keyword); ?>">
         <?php endif; ?>
-        <input type="hidden" name="id" value="<?= h($id); ?>">
-        <input type="hidden" name="page" value="<?= h($page); ?>">
+        <input type="hidden" name="id" value="<?= Utils::h($id); ?>">
+        <input type="hidden" name="page" value="<?= Utils::h($page); ?>">
         <div style="margin: 10px">
             <label for="title">タイトル：</label>
-            <input id="title" type="text" name="title" value="<?= h($selected_todo->title); ?>">
+            <input id="title" type="text" name="title" value="<?= Utils::h($selected_todo->title); ?>">
         </div>
         <div style="margin: 10px">
             <label for="content">内容：</label>
-            <textarea id="content" name="content" rows="8" cols="40"><?= h($selected_todo->content); ?></textarea>
+            <textarea id="content" name="content" rows="8" cols="40"><?= Utils::h($selected_todo->content); ?></textarea>
         </div>
         <input type="submit" value="OK">
         <input type="button" onclick="history.back()" value="戻る">

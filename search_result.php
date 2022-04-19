@@ -1,5 +1,5 @@
 <?php
-require(__DIR__ . "/./config.php");
+require_once(__DIR__ . "/app/config.php");
 
 // 検索文字の取得
 if (isset($_GET["keyword"])) {
@@ -37,7 +37,7 @@ $todos = $SearchResults[3];
 
     <!-- 検索ボックス -->
     <form action="" method="get">
-        <input type="text" name="keyword" style="padding: 10px;font-size: 16px;margin-bottom: 10px" value=<?= h($keyword); ?>>
+        <input type="text" name="keyword" style="padding: 10px;font-size: 16px;margin-bottom: 10px" value=<?= Utils::h($keyword); ?>>
         <button type="submit" style="padding: 10px;font-size: 16px;margin-bottom: 10px">Search Todo</button>
     </form>
 
@@ -60,22 +60,22 @@ $todos = $SearchResults[3];
         </tr>
         <?php foreach ($todos as $todo): ?>
             <tr>
-                <td><?= h($todo->title); ?></td>
-                <td><?= h($todo->content); ?></td>
-                <td><?= h($todo->created_at); ?></td>
-                <td><?= h($todo->updated_at); ?></td>
+                <td><?= Utils::h($todo->title); ?></td>
+                <td><?= Utils::h($todo->content); ?></td>
+                <td><?= Utils::h($todo->created_at); ?></td>
+                <td><?= Utils::h($todo->updated_at); ?></td>
                 <td>
                     <form method="post" action="edit.php">
-                        <input type="hidden" name="page" value="<?= h($page); ?>">
-                        <input type="hidden" name="keyword" value="<?= h($keyword); ?>">
-                        <button type="submit" name="id" style="padding: 10px;font-size: 16px;" value="<?= h($todo->id); ?>">編集する</button>
+                        <input type="hidden" name="page" value="<?= Utils::h($page); ?>">
+                        <input type="hidden" name="keyword" value="<?= Utils::h($keyword); ?>">
+                        <button type="submit" name="id" style="padding: 10px;font-size: 16px;" value="<?= Utils::h($todo->id); ?>">編集する</button>
                     </form>
                 </td>
                 <td>
                     <form method="post" action="delete.php">
-                        <input type="hidden" name="page" value="<?= h($page); ?>">
-                        <input type="hidden" name="keyword" value="<?= h($keyword); ?>">
-                        <button type="submit" name="id" style="padding: 10px;font-size: 16px;" value="<?= h($todo->id); ?>">削除する</button>
+                        <input type="hidden" name="page" value="<?= Utils::h($page); ?>">
+                        <input type="hidden" name="keyword" value="<?= Utils::h($keyword); ?>">
+                        <button type="submit" name="id" style="padding: 10px;font-size: 16px;" value="<?= Utils::h($todo->id); ?>">削除する</button>
                     </form>
                 </td>
             </tr>
@@ -84,17 +84,17 @@ $todos = $SearchResults[3];
 
     <!-- ページング -->
     <?php if ($page > 1): ?>
-        <a href="?page=<?= h($page)-1 ?>&keyword=<?= h($keyword); ?>">前へ</a>
+        <a href="?page=<?= Utils::h($page)-1 ?>&keyword=<?= Utils::h($keyword); ?>">前へ</a>
     <?php endif; ?>
     <?php for ($i = 1; $i <= $total_pages; $i++): ?>
         <?php if ($page == $i): ?>
-            <strong><a href="?page=<?= h($i); ?>&keyword=<?= h($keyword); ?>"><?= h($i); ?></a></strong>
+            <strong><a href="?page=<?= Utils::h($i); ?>&keyword=<?= Utils::h($keyword); ?>"><?= Utils::h($i); ?></a></strong>
         <?php else: ?>
-            <a href="?page=<?= h($i); ?>&keyword=<?= h($keyword); ?>"><?= h($i); ?></a>
+            <a href="?page=<?= Utils::h($i); ?>&keyword=<?= Utils::h($keyword); ?>"><?= Utils::h($i); ?></a>
         <?php endif; ?>
     <?php endfor; ?>
     <?php if ($page < $total_pages): ?>
-        <a href="?page=<?= h($page)+1 ?>&keyword=<?= h($keyword); ?>">次へ</a>
+        <a href="?page=<?= Utils::h($page)+1 ?>&keyword=<?= Utils::h($keyword); ?>">次へ</a>
     <?php endif; ?>
 </body>
 </html>

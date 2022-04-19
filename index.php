@@ -1,5 +1,5 @@
 <?php
-require(__DIR__ . "/./config.php");
+require_once(__DIR__ . "/app/config.php");
 
 // データベース接続
 $dbh = connectDb();
@@ -51,20 +51,20 @@ $todos = $todoInfo[2];
         </tr>
         <?php foreach ($todos as $todo): ?>
             <tr>
-                <td><?= h($todo->title); ?></td>
-                <td><?= h($todo->content); ?></td>
-                <td><?= h($todo->created_at); ?></td>
-                <td><?= h($todo->updated_at); ?></td>
+                <td><?= Utils::h($todo->title); ?></td>
+                <td><?= Utils::h($todo->content); ?></td>
+                <td><?= Utils::h($todo->created_at); ?></td>
+                <td><?= Utils::h($todo->updated_at); ?></td>
                 <td>
                     <form method="post" action="edit.php">
-                        <input type="hidden" name="page" value="<?= h($page); ?>">
-                        <button type="submit" name="id" style="padding: 10px;font-size: 16px;" value="<?= h($todo->id); ?>">編集する</button>
+                        <input type="hidden" name="page" value="<?= Utils::h($page); ?>">
+                        <button type="submit" name="id" style="padding: 10px;font-size: 16px;" value="<?= Utils::h($todo->id); ?>">編集する</button>
                     </form>
                 </td>
                 <td>
                     <form method="post" action="delete.php">
-                        <input type="hidden" name="page" value="<?= h($page); ?>">
-                        <button type="submit" name="id" style="padding: 10px;font-size: 16px;" value="<?= h($todo->id); ?>">削除する</button>
+                        <input type="hidden" name="page" value="<?= Utils::h($page); ?>">
+                        <button type="submit" name="id" style="padding: 10px;font-size: 16px;" value="<?= Utils::h($todo->id); ?>">削除する</button>
                     </form>
                 </td>
             </tr>
@@ -73,19 +73,19 @@ $todos = $todoInfo[2];
 
     <!-- ページング -->
     <?php if ($page > 1): ?>
-        <a href="?page=<?= h($page)-1 ?>">前へ</a>
+        <a href="?page=<?= Utils::h($page)-1 ?>">前へ</a>
     <?php endif; ?>
 
     <?php for ($i = 1; $i <= $total_pages; $i++): ?>
         <?php if ($page == $i): ?>
-            <strong><a href="?page=<?= h($i); ?>"><?= h($i); ?></a></strong>
+            <strong><a href="?page=<?= Utils::h($i); ?>"><?= Utils::h($i); ?></a></strong>
         <?php else: ?>
-            <a href="?page=<?= h($i); ?>"><?= h($i); ?></a>
+            <a href="?page=<?= Utils::h($i); ?>"><?= Utils::h($i); ?></a>
         <?php endif; ?>
     <?php endfor; ?>
 
     <?php if ($page < $total_pages): ?>
-        <a href="?page=<?= h($page)+1 ?>">次へ</a>
+        <a href="?page=<?= Utils::h($page)+1 ?>">次へ</a>
     <?php endif; ?>
 </body>
 </html>
