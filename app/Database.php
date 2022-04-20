@@ -2,9 +2,11 @@
 
 class Database {
 
-    public static function connect() {
+    public $dbh;
+    
+    public function connect() {
         try {
-            $dbh = new PDO(
+            $this->dbh = new PDO(
                 DSN, 
                 DB_USER, 
                 DB_PASS,
@@ -14,8 +16,6 @@ class Database {
                     PDO::ATTR_EMULATE_PREPARES => false,
                 ]
             );
-            return $dbh;
-            
         } catch (Exeption $e) {
         
             echo "ただいま障害によりご迷惑をおかけしております。 <br />";

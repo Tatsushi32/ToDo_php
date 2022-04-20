@@ -6,18 +6,18 @@ if (isset($_GET["keyword"])) {
     $keyword = $_GET["keyword"];
 }
 
-// データベース接続
-$dbh = connectDb();
+$todo = new Todo();
+$pagenation = new Pagination();
 
 // ページネーション
-$pagination = searchResultPagination($dbh, $keyword);
+$pagination = $pagenation->pagination($keyword);
 $page = $pagination[0];
 $total_results = $pagination[1];
 $total_pages = $pagination[2];
 $offset = $pagination[3];
 
 // 検索結果の取得
-$todos = getSearchResult($dbh, $keyword, $offset);
+$todos = $todo->getSearchResult($keyword, $offset);
 
 ?>
 

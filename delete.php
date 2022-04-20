@@ -1,6 +1,6 @@
 <?php
 
-require_once(__DIR__ . "/./config.php");
+require_once(__DIR__ . "/app/config.php");
 
 // POSTデータかを判定
 Method::check();
@@ -13,11 +13,8 @@ if (isset($_POST["keyword"])) {
     $keyword = $_POST["keyword"];
 }
 
-// データベース接続
-$dbh = connectDb();
-
-// todo削除
-deleteTodo($dbh, $id);
+$todo = new Todo();
+$todo->delete($id);
 
 // 削除を実行した画面に戻る
 if (isset($_POST["keyword"])) {
@@ -26,4 +23,3 @@ if (isset($_POST["keyword"])) {
     header("Location: index.php?page=" . $page);
 }
 exit();
-?>

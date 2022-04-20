@@ -13,11 +13,8 @@ if (isset($_POST["keyword"])) {
     $keyword = $_POST["keyword"];
 }
 
-// データベース接続
-$dbh = connectDb();
-
-// 選択したtodoの情報取得
-$selected_todo = selectTodo($dbh, $id);
+$todo = new Todo();
+$selected_todo = $todo->get($id);
 
 ?>
 

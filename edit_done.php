@@ -19,11 +19,8 @@ if (isset($_POST["keyword"])) {
     $keyword = $_POST["keyword"];
 }
 
-// データベース接続
-$dbh = connectDb();
-
-// todo更新
-updateTodo($dbh, $title, $content, $id);
+$todo = new Todo();
+$todo->update($title, $content, $id);
 
 ?>
 

@@ -12,11 +12,8 @@ Token::validate();
 $title = $_POST["title"];
 $content = $_POST["content"];
 
-// データベース接続
-$dbh = connectDb();
-
-// 新規todo作成
-createTodo($dbh, $title, $content);
+$todo = new Todo();
+$todo->create($title, $content);
 
 ?>
 
