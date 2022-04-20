@@ -2,7 +2,7 @@
 
 class Database {
 
-    public $dbh;
+    protected $dbh;
     
     public function connect() {
         try {

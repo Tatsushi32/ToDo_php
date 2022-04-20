@@ -7,14 +7,13 @@ if (isset($_GET["keyword"])) {
 }
 
 $todo = new Todo();
-$pagenation = new Pagination();
+$pagenation = new PagenationSearch($keyword);
 
 // ページネーション
-$pagination = $pagenation->pagination($keyword);
-$page = $pagination[0];
-$total_results = $pagination[1];
-$total_pages = $pagination[2];
-$offset = $pagination[3];
+$total_results = $pagenation->getTotalResults($keyword);
+$total_pages = $pagenation->getTotalPages($total_results);
+$page = $pagenation->getPresentPage($total_pages);
+$offset = $pagenation->getOffset($page);
 
 // 検索結果の取得
 $todos = $todo->getSearchResult($keyword, $offset);

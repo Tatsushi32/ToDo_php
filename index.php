@@ -2,13 +2,12 @@
 require_once(__DIR__ . "/app/config.php");
 
 $todo = new Todo();
-$pagenation = new Pagination();
+$pagenation = new PaginationAll();
 
 // ページネーション
-$pagenation = $pagenation->pagination();
-$page = $pagenation[0];
-$total_pages = $pagenation[1];
-$offset = $pagenation[2];
+$total_pages = $pagenation->getAllTodo();
+$page = $pagenation->getPresentPage($total_pages);
+$offset = $pagenation->getOffset($page);
 
 // Todo情報の取得
 $todos = $todo->getAll($offset);
