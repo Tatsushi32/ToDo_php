@@ -6,14 +6,14 @@ if (isset($_GET["keyword"])) {
     $keyword = $_GET["keyword"];
 }
 
-$todo = new Todo();
+$todo = new Todo($keyword);
 $pagenation = new PagenationSearch($keyword);
 
 // ページネーション
-$total_results = $pagenation->getTotalResults($keyword);
-$total_pages = $pagenation->getTotalPages($total_results);
-$page = $pagenation->getPresentPage($total_pages);
-$offset = $pagenation->getOffset($page);
+$total_results = $pagenation->total_results;
+$total_pages = $pagenation->total_pages;
+$page = $pagenation->page;
+$offset = $pagenation->offset;
 
 // 検索結果の取得
 $todos = $todo->getSearchResult($keyword, $offset);
@@ -50,53 +50,9 @@ $todos = $todo->getSearchResult($keyword, $offset);
     <?php endif; ?>
 
     <!-- Todo一覧 -->
-    <table border="1">
-        <colgroup span="4"></colgroup>
-        <tr>
-            <th>タイトル</th>
-            <th>内容</th>
-            <th>作成日時</th>
-            <th>更新日時</th>
-            <th>編集</th>
-            <th>削除</th>
-        </tr>
-        <?php foreach ($todos as $todo): ?>
-            <tr>
-                <td><?= Utils::h($todo->title); ?></td>
-                <td><?= Utils::h($todo->content); ?></td>
-                <td><?= Utils::h($todo->created_at); ?></td>
-                <td><?= Utils::h($todo->updated_at); ?></td>
-                <td>
-                    <form method="post" action="edit.php">
-                        <input type="hidden" name="page" value="<?= Utils::h($page); ?>">
-                        <input type="hidden" name="keyword" value="<?= Utils::h($keyword); ?>">
-                        <button type="submit" name="id" style="padding: 10px;font-size: 16px;" value="<?= Utils::h($todo->id); ?>">編集する</button>
-                    </form>
-                </td>
-                <td>
-                    <form method="post" action="delete.php">
-                        <input type="hidden" name="page" value="<?= Utils::h($page); ?>">
-                        <input type="hidden" name="keyword" value="<?= Utils::h($keyword); ?>">
-                        <button type="submit" name="id" style="padding: 10px;font-size: 16px;" value="<?= Utils::h($todo->id); ?>">削除する</button>
-                    </form>
-                </td>
-            </tr>
-        <?php endforeach; ?>
-    </table> 
+    <?php require_once(__DIR__ . "/show_todo.php"); ?>
 
     <!-- ページング -->
-    <?php if ($page > 1): ?>
-        <a href="?page=<?= Utils::h($page)-1 ?>&keyword=<?= Utils::h($keyword); ?>">前へ</a>
-    <?php endif; ?>
-    <?php for ($i = 1; $i <= $total_pages; $i++): ?>
-        <?php if ($page == $i): ?>
-            <strong><a href="?page=<?= Utils::h($i); ?>&keyword=<?= Utils::h($keyword); ?>"><?= Utils::h($i); ?></a></strong>
-        <?php else: ?>
-            <a href="?page=<?= Utils::h($i); ?>&keyword=<?= Utils::h($keyword); ?>"><?= Utils::h($i); ?></a>
-        <?php endif; ?>
-    <?php endfor; ?>
-    <?php if ($page < $total_pages): ?>
-        <a href="?page=<?= Utils::h($page)+1 ?>&keyword=<?= Utils::h($keyword); ?>">次へ</a>
-    <?php endif; ?>
+    <?php require_once(__DIR__ . "/pagenation.php"); ?>
 </body>
 </html>

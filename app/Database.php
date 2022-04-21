@@ -16,8 +16,7 @@ class Database {
                     PDO::ATTR_EMULATE_PREPARES => false,
                 ]
             );
-        } catch (Exeption $e) {
-        
+        } catch (PDOException $e) {
             echo "ただいま障害によりご迷惑をおかけしております。 <br />";
             header("Location: index.php");
             exit();

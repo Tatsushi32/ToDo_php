@@ -2,22 +2,28 @@
 
 class Todo extends Database{
     
-    public function __construct() {
+    private $offset;
+    private $keyword;
+
+    public function __construct($keyword=null) {
         $this->connect();
+        $this->keyword = isset($keyword) ? $keyword : null;
+        $pagination = isset($keyword) ? new PagenationSearch($keyword) : new PaginationAll();
+        $this->offset = $pagination->offset;
     }
 
-    public function getAll($offset) {
-        $sql = "SELECT * FROM posts limit " . $offset . "," . TODO_PER_PAGE;
+    public function getAll() {
+        $sql = "SELECT * FROM posts limit " . $this->offset . "," . TODO_PER_PAGE;
         $stmt = $this->dbh->prepare($sql);
         $stmt->execute();
         $todos = $stmt->fetchAll();
         return $todos;
     }
 
-    public function getSearchResult($keyword, $offset) {
-        $sql = "SELECT * FROM posts WHERE title LIKE :keyword LIMIT ". $offset . "," . TODO_PER_PAGE;
+    public function getSearchResult() {
+        $sql = "SELECT * FROM posts WHERE title LIKE :keyword LIMIT ". $this->offset . "," . TODO_PER_PAGE;
         $stmt = $this->dbh->prepare($sql);
-        $stmt->bindValue(":keyword", "%{$keyword}%");
+        $stmt->bindValue(":keyword", "%{$this->keyword}%");
         $stmt->execute();
         $todos = $stmt->fetchAll();
         return $todos;
