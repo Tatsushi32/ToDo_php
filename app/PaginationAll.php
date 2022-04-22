@@ -2,7 +2,7 @@
 
 class PaginationAll extends Database{
 
-    private $total_pages;
+    public $total_pages;
     public $page;
 
     public function __construct() {
@@ -36,10 +36,7 @@ class PaginationAll extends Database{
             $this->showPrevious();
         }
         $this->showPages();
-        var_dump($this->page);
-        var_dump($this->total_pages);
         if ($this->page < $this->total_pages) {
-            echo "あああ";
             $this->showNext();
         }
     }
@@ -49,8 +46,6 @@ class PaginationAll extends Database{
     }
 
     public function showNext() {
-        var_dump($this->page);
-        var_dump($this->total_pages);
         echo '<a href="?page=' . Utils::h($this->page+1) . '">次へ</a>';
     }
 

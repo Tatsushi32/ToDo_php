@@ -3,7 +3,6 @@ class PaginationSearch extends PaginationAll {
 
     private $keyword;
     public $total_results;
-    public $total_pages;
 
     public function __construct($keyword) {
         $this->connect();
@@ -30,15 +29,10 @@ class PaginationSearch extends PaginationAll {
     }
 
     public function showNext() {
-        var_dump($this->page);
-        var_dump($this->total_pages);
         echo '<a href="?page=' . Utils::h($this->page+1) . '&keyword=' . Utils::h($this->keyword) . '">次へ</a>';
     }
 
     public function showPages() {
-        var_dump($this->total_pages);
-        // var_dump($this->page);
-        // var_dump($this->total_pages);
         for ($i = 1; $i <= Utils::h($this->total_pages); $i++) {
             echo '<a href="?page=' . $i . '&keyword=' . Utils::h($this->keyword) . '">' . $i . '</a>';
         }
