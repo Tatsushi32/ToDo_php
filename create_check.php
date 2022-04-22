@@ -13,6 +13,10 @@ $title = $_POST["title"];
 $content = $_POST["content"];
 $token = $_SESSION['token'];
 
+$validate = new Validate();
+$validate->title($title);
+$validate->content($content);
+
 ?>
 
 
@@ -22,22 +26,6 @@ require_once(__DIR__ . "/components/head.php");
 ?>
 
 <body>
-    <!-- タイトルチェック -->
-    <?php if ($title == ""): ?>
-        <p>タイトルが入力されていません。</p>
-    <?php elseif (mb_strlen($title) > 20): ?>
-        <p>タイトルは20文字以内で入力してください。</p>
-    <?php else: ?>
-        <p>タイトル：<?= Utils::h($title); ?></p>
-    <?php endif; ?>
-
-    <!-- 内容チェック -->
-    <?php if ($content == ""): ?>
-        <p>内容が入力されていません。</p>
-    <?php else: ?>
-        <p>内容：<?= Utils::h($content); ?></p>
-    <?php endif; ?>
-
     <!-- 条件を満たしていなければ戻るボタンのみ表示 -->
     <?php if ($title == "" || $content == "" || mb_strlen($title) > 20): ?>
         <form>
