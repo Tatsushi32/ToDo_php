@@ -2,15 +2,13 @@
 
 class PaginationAll extends Database{
 
-    public $total_pages;
+    private $total_pages;
     public $page;
-    public $offset;
 
     public function __construct() {
         $this->connect();
-        self::getAllTodo();
-        self::getPresentPage();
-        self::getOffset();
+        $this->getAllTodo();
+        $this->getPresentPage();
     }
 
     public function getAllTodo() {
@@ -30,5 +28,35 @@ class PaginationAll extends Database{
 
     public function getOffset() {
         $this->offset = TODO_PER_PAGE * ($this->page - 1);
+        return $this->offset;
+    }
+    
+    public function showPagination() {
+        if ($this->page > 1) {
+            $this->showPrevious();
+        }
+        $this->showPages();
+        var_dump($this->page);
+        var_dump($this->total_pages);
+        if ($this->page < $this->total_pages) {
+            echo "あああ";
+            $this->showNext();
+        }
+    }
+
+    public function showPrevious() {
+        echo '<a href="?page=' . Utils::h($this->page-1) . '">前へ</a>';
+    }
+
+    public function showNext() {
+        var_dump($this->page);
+        var_dump($this->total_pages);
+        echo '<a href="?page=' . Utils::h($this->page+1) . '">次へ</a>';
+    }
+
+    public function showPages() {
+        for ($i = 1; $i <= Utils::h($this->total_pages); $i++) {
+            echo '<a href="?page=' . $i . '">' . $i . '</a>';
+        }
     }
 }
