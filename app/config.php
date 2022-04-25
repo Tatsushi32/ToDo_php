@@ -8,12 +8,10 @@ define("DB_USER", "root");
 define("DB_PASS", "");
 
 spl_autoload_register(function ($class) {
-    $fileNmae = sprintf(__DIR__ . "/%s.php", $class);
-
-    if (file_exists($fileNmae)) {
-        require($fileNmae);
-    } else {
+    $fileName = sprintf(__DIR__ . "/%s.php", $class);
+    if (file_exists($fileName === false)) {
         echo "File not found: " . $fileName;
         exit;
     }
+    require($fileName);
 });

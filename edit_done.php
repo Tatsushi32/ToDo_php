@@ -4,10 +4,10 @@ session_start();
 require_once(__DIR__ . "/app/config.php");
 
 // POSTデータかを判定
-MEthod::check();
+Validate::method();
 
 // トークン判別
-Token::validate();
+Validate::token();
 
 $id = $_POST["id"];
 $page = $_POST["page"];
@@ -15,9 +15,7 @@ $title = $_POST["title"];
 $content = $_POST["content"];
 
 // 検索結果画面からの場合
-if (isset($_POST["keyword"])) {
-    $keyword = $_POST["keyword"];
-}
+$keyword = isset($_POST["keyword"]) ? $_POST["keyword"] : null;
 
 $todo = new Todo();
 $todo->update($title, $content, $id);
@@ -34,7 +32,7 @@ require_once(__DIR__ . "/components/head.php");
 <br />
 
 <!-- 編集ボタンを押したもとの画面に戻る -->
-<?php if (isset($_POST["keyword"])): ?>
+<?php if ($keyword): ?>
     <a href="search_result.php?page=<?= Utils::h($page); ?>&keyword=<?= Utils::h($keyword); ?>">戻る</a>
 <?php else: ?>
     <a href="index.php?page=<?= Utils::h($page); ?>">戻る</a>

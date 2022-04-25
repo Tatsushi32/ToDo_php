@@ -3,15 +3,13 @@
 require_once(__DIR__ . "/app/config.php");
 
 // POSTデータかを判定
-Method::check();
+Validate::method();
 
 $id = $_POST["id"];
 $page = $_POST["page"];
 
 // 検索結果画面からの場合
-if (isset($_POST["keyword"])) {
-    $keyword = $_POST["keyword"];
-}
+$keyword = isset($_POST["keyword"]) ? $_POST["keyword"] : null;
 
 $todo = new Todo();
 $selected_todo = $todo->get($id);
@@ -28,7 +26,7 @@ require_once(__DIR__ . "/components/head.php");
     </h1>
     <form method="post" action="edit_check.php">
         <!-- 検索結果画面からの遷移の場合 -->
-        <?php if (isset($_POST["keyword"])): ?>
+        <?php if ($keyword): ?>
             <input type="hidden" name="keyword" value="<?= Utils::h($keyword); ?>">
         <?php endif; ?>
         <input type="hidden" name="id" value="<?= Utils::h($id); ?>">

@@ -8,13 +8,14 @@ class GetTodo extends Database {
 
     public function __construct($keyword=null) {
         $this->connect();
-        $this->keyword = isset($keyword) ? $keyword : null;
-        $pagination = isset($keyword) ? new PaginationSearch($keyword) : new PaginationAll();
-        $this->total_results = isset($keyword) ? $pagination->total_results : null;
+        $this->keyword = $keyword ? $keyword : null;
+        $pagination = $keyword ? new PaginationSearch($keyword) : new PaginationAll();
+        $this->total_results = $keyword ? $pagination->total_results : null;
         $this->offset = $pagination->getOffset();
         $this->present_page = $pagination->page;
     }
 
+    // 全件
     public function getAll() {
         $sql = "SELECT * FROM posts limit " . $this->offset . "," . TODO_PER_PAGE;
         $stmt = $this->dbh->prepare($sql);
@@ -23,6 +24,7 @@ class GetTodo extends Database {
         return $todos;
     }
 
+    // 全検索結果
     public function getSearchResult() {
         $sql = "SELECT * FROM posts WHERE title LIKE :keyword LIMIT ". $this->offset . "," . TODO_PER_PAGE;
         $stmt = $this->dbh->prepare($sql);
@@ -33,7 +35,7 @@ class GetTodo extends Database {
     }
 
     public function resultNone() {
-        if ($this->total_results == 0) {
+        if ($this->total_results === 0) {
             echo "<h2>見つかりませんでした。</h2>";
             exit();
         }

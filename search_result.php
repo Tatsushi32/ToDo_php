@@ -7,9 +7,8 @@ if (isset($_GET["keyword"])) {
 }
 
 $todo = new GetTodo($keyword);
-
-// 検索結果の取得
 $todos = $todo->getSearchResult();
+$page = $todo->present_page;
 ?>
 
 <?php
@@ -26,10 +25,7 @@ require_once(__DIR__ . "/components/head.php");
     <br />
 
     <!-- 検索ボックス -->
-    <form action="search_result.php" method="get">
-        <input type="text" name="keyword" style="padding: 10px;font-size: 16px;margin-bottom: 10px" value=<?= Utils::h($keyword); ?>>
-        <button type="submit" style="padding: 10px;font-size: 16px;margin-bottom: 10px">Search Todo</button>
-    </form>
+    <?php require_once(__DIR__ . "/components/search_box.php"); ?>
 
     <!-- 検索結果が0件の場合 -->
     <?php $todo->resultNone(); ?>

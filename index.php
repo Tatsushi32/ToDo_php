@@ -23,10 +23,7 @@ require_once(__DIR__ . "/components/head.php");
     <br />
 
     <!-- 検索ボックス -->
-    <form action="search_result.php" method="get">
-        <input type="text" name="keyword" style="padding: 10px;font-size: 16px;margin-bottom: 10px">
-        <button type="submit" style="padding: 10px;font-size: 16px;margin-bottom: 10px">Search Todo</button>
-    </form>
+    <?php require_once(__DIR__ . "/components/search_box.php"); ?>
 
     <!-- Todo一覧 -->
     <?php require_once(__DIR__ . "/components/show_todo.php"); ?>
