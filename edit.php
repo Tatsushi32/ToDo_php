@@ -3,40 +3,30 @@
 require_once(__DIR__ . "/app/config.php");
 
 // POSTデータかを判定
-methodCheck();
+Validate::method();
 
 $id = $_POST["id"];
 $page = $_POST["page"];
 
 // 検索結果画面からの場合
-if (isset($_POST["keyword"])) {
-    $keyword = $_POST["keyword"];
-}
+$keyword = isset($_POST["keyword"]) ? $_POST["keyword"] : null;
 
-// データベース接続
-$dbh = connectDb();
-
-// 選択したtodoの情報取得
-$selected_todo = selectTodo($dbh, $id);
+$todo = new Todo();
+$selected_todo = $todo->get($id);
 
 ?>
 
-<!doctype html>
-<html lang="ja">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Edit Page</title>
-</head>
+<?php
+$page_title = "Edit Page";
+require_once(__DIR__ . "/components/head.php");
+?>
 <body>
     <h1>
         Edit Todo Page
     </h1>
     <form method="post" action="edit_check.php">
         <!-- 検索結果画面からの遷移の場合 -->
-        <?php if (isset($_POST["keyword"])): ?>
+        <?php if ($keyword): ?>
             <input type="hidden" name="keyword" value="<?= Utils::h($keyword); ?>">
         <?php endif; ?>
         <input type="hidden" name="id" value="<?= Utils::h($id); ?>">
